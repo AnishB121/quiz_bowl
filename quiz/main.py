@@ -11,13 +11,16 @@ example = ['<b>This element is the central atom of the product of the Michaelis-
  '<b>Phaeton misleads the protagonist of this novel after kissing a woman he claimed to be his sister. Miss Lavish publishes a book that includes a scene with a romanticized version of the female protagonist’s kiss with a man in a field of (*)</b> violets in this novel. That woman’s fiancée, a “superior” Londoner, shows true remorse for his pompousness after the protagonist leaves him for a man who rescued her after witnessing a murder in Italy. That man, George Emerson, marries Lucy Honeychurch in, for 10 points, what E.M. Forster novel about the title accommodation overlooking the Arno?',
  'The name of this location means gathering place in its native tongue. Shark’s Cove is one of the best dive sites on this island, although Hanauma Bay is also popular. The television show Lost was filmed on a beach on the north shore of this island, which is also home to the Banzai Pipeline at Ehukai Beach Park. Snakes on a Plane opens with a view of Diamondhead on this island. The Beach Boys sang a song referencing this island’s Waimea Bay, which is home to a surfing contest in memory of Eddie Aikau. This island is the birthplace of Barack Obama and home to the USS Arizona Memorial. For 10 points, name this island, the location of Pearl Harbor, Waikiki, and Honolulu.']
 api_key = "AIzaSyB9dKwOlNmn_iBsNFFtEJ3p10PPHGERkGE"
+passcode="4a3f9c2e6d7b8a0c1e2f3d4a5b6c7e8d9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4"
 import wikipediaapi
 import google.generativeai as genai
 class question(BaseModel):
+    passcode: str
     diffculty: str
     topic: str 
 
 class guess(BaseModel):
+    passcode: str
     question: str
 
 @app.get("/")
@@ -30,13 +33,19 @@ QZZR = genai.GenerativeModel('gemini-1.5-flash')
 wiki_wiki = wikipediaapi.Wikipedia(user_agent='QZZR (imratulc@gmail.com)', language='en',extract_format=wikipediaapi.ExtractFormat.WIKI)
 @app.post("/get_question/")
 async def get_question(question: question):
-    p = wiki_wiki.page(question.topic)
-    prompt_3 = "Use the following context to generate a pyramidal quizbowl-type question on the given topic. The format should be similar to a quizbowl question, and the answer should lie within information in the article. The difficulty rating should be" + question.diffculty + ". Make sure that the question contains 4-5 sentences, sorted from hard and obscure clues in sentences to more revealing sentences. All sentences should countain a clue pertaining to the answer, not context. The last sentence must be worded like a question, but does not necessarily need to be a question. Please start the last sentence in the question field with the phrase 'For ten points'. Don't add an answer field, and make sure the answer is not " + question.topic + ". The question should be about a detail of the event, not the event itself. Here are a few questions to model the structure of your question after: " + example[0]+ example[1] + example[2] + example[3] + example[4] + example[5] + example[6] + "Here is the context: " + p.text
-    response = QZZR.generate_content([prompt_3])
-    return {'response': response.text}
+    if question.passcode == "4a3f9c2e6d7b8a0c1e2f3d4a5b6c7e8d9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4":
+        p = wiki_wiki.page(question.topic)
+        prompt_3 = "Use the following context to generate a pyramidal quizbowl-type question on the given topic. The format should be similar to a quizbowl question, and the answer should lie within information in the article. The difficulty rating should be" + question.diffculty + ". Make sure that the question contains 4-5 sentences, sorted from hard and obscure clues in sentences to more revealing sentences. All sentences should countain a clue pertaining to the answer, not context. The last sentence must be worded like a question, but does not necessarily need to be a question. Please start the last sentence in the question field with the phrase 'For ten points'. Don't add an answer field, and make sure the answer is not " + question.topic + ". The question should be about a detail of the event, not the event itself. Here are a few questions to model the structure of your question after: " + example[0]+ example[1] + example[2] + example[3] + example[4] + example[5] + example[6] + "Here is the context: " + p.text
+        response = QZZR.generate_content([prompt_3])
+        return {'response': response.text}
+    else:
+        return {'response':'No'}
 
 @app.post('/get_answer/')
 async def get_answer(guess: guess):
-    prompt_4 = "Answer the following question. Do not provide a justification, just the answer alone, not in a sentence. Here is the question: " + guess.question
-    response_1 = QZZR.generate_content([prompt_4])
-    return {'response': response_1.text}
+    if guess.passcode == "4a3f9c2e6d7b8a0c1e2f3d4a5b6c7e8d9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4":
+        prompt_4 = "Answer the following question. Do not provide a justification, just the answer alone, not in a sentence. Here is the question: " + guess.question
+        response_1 = QZZR.generate_content([prompt_4])
+        return {'response': response_1.text}
+    else:
+        return {'response':'No'}
