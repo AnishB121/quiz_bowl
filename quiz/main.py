@@ -1,7 +1,15 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
 example = ['<b>This element is the central atom of the product of the Michaelis-Arbuzov reaction, which is used to prepare esters of this element. Knowles won the 2001 Chemistry Nobel for designing the asymmetric, chiral hydrogenation catalyst DIPAMP, whose two central atoms are of this element. This element is the central atom of a reagent that deaminates arenediazonium salts. Replacing hydroxyl groups with halogens often uses (*)</b> trihalides of this element. The most common organic reagent that uses this element is its triphenyl type, which is a reactant in the Wittig reaction. For 10 points, name this nonmetal that lies below nitrogen on the periodic table.',
  '<b>An attempt to impeach this man led to a brawl within his state legislature on “Bloody Monday.” This man imagined his potential presidency, including his cabinet nominees, in the book </b><i><b>My First Days in the White </b><b>House</b></i><b>. This man attempted to unseat Judge Benjamin Pavy through gerrymandering, leading Pavy’s son-in-law, Dr. (*)</b> Carl Weiss, to assassinate him. This man planned to redistribute wealth by limiting annual income to $1 million in a scheme that would make “every man a king,” the “Share Our Wealth” program. For 10 points, name this Louisiana politician who was nicknamed “the Kingfish.”',
  "This woman, who is described as a “clothed hyena” in one book, remembers her mother’s parrot asking “qui est là?” in another text. In the first book in which she appears, a stout redhead is repeatedly blamed for her “curious cachinnations.” In a later book, she lives with her aunt Cora after her home in Coulibri (koo-LEE-bree) is destroyed, and she commits date-rape in Granbois (grahn-BWAH) using an obeah (oh-BAY-ah) potion from Christophine. In the earlier book, Mr. Briggs reveals this person’s existence during an aborted wedding. The later book explains that this woman was called Antoinette Cosway before being renamed and shuttered in an annex of Thornfield Hall, where she was guarded by Grace Poole. For 10 points, what protagonist of Jean Rhys’s (zhahn rees's) Wide Sargasso Sea is the “madwoman in the attic” in Charlotte Bronte’s Jane Eyre?",
